@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mongo:8
+    environment:
+      MONGO_INITDB_DATABASE: expense_tracker
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27018:27017"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    environment:
+      MONGO_URI: mongodb://db:27017/expense_tracker
+
+volumes:
+  mongo_data:
