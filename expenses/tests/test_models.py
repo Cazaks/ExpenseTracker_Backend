@@ -11,9 +11,9 @@ class CategoryModelTests(TestCase):
         category = Category.objects.create(user=self.user, category_name="Food")
         self.assertEqual(str(category), "Food")
 
-    def test_category_is_default_defaults_to_false(self):
+    def test_category_is_deleted_defaults_to_false(self):
         category = Category.objects.create(user=self.user, category_name="Transport")
-        self.assertFalse(category.is_default)
+        self.assertFalse(category.is_deleted)
 
     def test_category_requires_a_user(self):
         category = Category(category_name="Rent")
