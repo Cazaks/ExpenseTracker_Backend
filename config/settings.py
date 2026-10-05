@@ -131,6 +131,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "expenses.validators.SpecialCharacterValidator",
     },
+    {
+        "NAME": "expenses.validators.UppercaseValidator",
+    },
 ]
 
 # Internationalization

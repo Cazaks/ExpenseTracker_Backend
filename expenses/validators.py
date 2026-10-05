@@ -19,3 +19,13 @@ class SpecialCharacterValidator:
 
     def get_help_text(self):
         return "Your password must contain at least one special character (e.g. ! @ # $ %)."
+
+
+class UppercaseValidator:
+    def validate(self, password, user=None):
+        if not re.search(r"[A-Z]", password):
+            raise ValidationError("Password must contain at least one uppercase letter.",
+                                  code='password_no_uppercase_char',)
+
+    def get_help_text(self):
+        return "Your password must contain at least one uppercase letter (A–Z).."
