@@ -62,14 +62,33 @@ MIGRATION_MODULES = {
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Expense Tracker API",
     "DESCRIPTION": "API for tracking personal expenses, categories, and budgets.",
     "VERSION": "1.0.0",
-}
 
+    "SECURITY": [
+        {
+            "BearerAuth": [],
+        }
+    ],
+
+    "COMPONENTS": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -118,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
     {
-        "NAME": "expenses.validators.NoWhitespaceValidator",
+        "NAME": "expenses.validators.NoWhiteSpaceValidator",
     },
     {
         "NAME": "expenses.validators.SpecialCharacterValidator",
