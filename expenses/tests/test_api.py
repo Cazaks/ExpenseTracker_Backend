@@ -29,4 +29,4 @@ class CategoryAPITests(APITestCase):
     def test_unauthenticated_request_is_rejected(self):
         self.client.force_authenticate(user=None)
         response = self.client.get("/api/categories/")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
