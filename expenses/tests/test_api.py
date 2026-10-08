@@ -30,3 +30,34 @@ class CategoryAPITests(APITestCase):
         self.client.force_authenticate(user=None)
         response = self.client.get("/api/categories/")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_delete_category_soft_deletes_instead_of_removing(self):
+        category = Category.objects.create(user=self.user, category_name="Food")
+        response = self.client.delete(f"/api/categories/{category.id}/")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        category.refresh_from_db()
+        self.assertFalse(category.is_active)
+        self.assertTrue(Category.objects.filter(id=category.id).exists())
+
+        response = self.client.get("/api/categories/")
+        self.assertEqual(len(response.data), 0)
+
+class SignupAPITests(APITestCase):
+    def test_signup_creates_user(self):
+        response = self.client.post("/api/signup/", {
+            "username": "newuser",
+            "email": "new@example.com",
+            "password": "Myp@ssword1",
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(User.objects.filter(username="newuser").exists())
+        self.assertNotIn("password", response.data)
+
+    def test_signup_rejects_weak_password(self):
+        response = self.client.post("/api/signup/", {
+            "username": "weakuser",
+            "email": "weak@example.com",
+            "password": "password",
+        })
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

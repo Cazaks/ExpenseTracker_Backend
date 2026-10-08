@@ -11,11 +11,12 @@ class CategoryModelTests(TestCase):
         category = Category.objects.create(user=self.user, category_name="Food")
         self.assertEqual(str(category), "Food")
 
-    def test_category_is_deleted_defaults_to_false(self):
+    def test_category_is_active_defaults_to_true(self):
         category = Category.objects.create(user=self.user, category_name="Transport")
-        self.assertFalse(category.is_deleted)
+        self.assertTrue(category.is_active)
 
     def test_category_requires_a_user(self):
         category = Category(category_name="Rent")
         with self.assertRaises(Exception):
             category.full_clean()
+
