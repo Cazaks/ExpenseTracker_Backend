@@ -1,6 +1,7 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics
 from .models import Category
-from .serializers import CategorySerializer
+from .serializers import CategorySerializer, SignUpSerializer
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -15,3 +16,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         instance.is_active = False
         instance.save()
+
+class SignUpView(generics.CreateAPIView):
+    serializer_class = SignUpSerializer
+    permission_classes = [permissions.AllowAny]
+
