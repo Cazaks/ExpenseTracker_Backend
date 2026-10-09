@@ -39,3 +39,9 @@ class SignUpSerializer(serializers.ModelSerializer):
         )
         return user
 
+
+class OwnCategorySerializer(serializers.PrimaryKeyRelatedField):
+    def get_queryset(self):
+        request = self.context.get('request')
+
+
